@@ -1,0 +1,53 @@
+import matplotlib.pyplot as plt
+
+def midpoint_circle(xc, yc, r):
+    x = 0
+    y = r
+    p = 1 - r
+
+    x_pts = []
+    y_pts = []
+
+    def sym(x, y):
+        points = [
+            (xc + x, yc + y),
+            (xc - x, yc + y),
+            (xc + x, yc - y),
+            (xc - x, yc - y),
+            (xc + y, yc + x),
+            (xc - y, yc + x),
+            (xc + y, yc - x),
+            (xc - y, yc - x)
+        ]
+
+        for px, py in points:
+            x_pts.append(px)
+            y_pts.append(py)
+
+    sym(x, y)
+
+    while x < y:
+        x += 1
+
+        if p < 0:
+            p += 2 * x + 1
+        else:
+            y -= 1
+            p += 2 * (x - y) + 1
+
+        sym(x, y)
+
+    return x_pts, y_pts
+
+
+# Plot the circle
+x, y = midpoint_circle(0, 0, 12)
+
+plt.figure(figsize=(4, 4))
+plt.scatter(x, y, color="green", s=10, label="Midpoint Circle")
+
+plt.gca().set_aspect("equal")
+plt.grid(True)
+plt.legend()
+
+plt.show()

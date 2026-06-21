@@ -1,0 +1,37 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Original Line Sequence
+pts = np.array([
+    [2, 2],
+    [5, 2],
+    [5, 5],
+    [2, 2]
+])
+
+# Translate
+translated_pts = pts + [3, 2]
+
+# Rotate 45 degrees around origin
+theta = np.radians(45)
+c = np.cos(theta)
+s = np.sin(theta)
+
+R = np.array([
+    [c, -s],
+    [s,  c]
+])
+
+rotated_pts = pts @ R.T
+
+# Plot
+plt.figure(figsize=(5, 4))
+
+plt.plot(pts[:, 0], pts[:, 1], 'b-', label="Original")
+plt.plot(translated_pts[:, 0], translated_pts[:, 1], 'g--', label="Translated")
+plt.plot(rotated_pts[:, 0], rotated_pts[:, 1], 'r:', label="Rotated")
+
+plt.grid(True)
+plt.legend()
+
+plt.show()

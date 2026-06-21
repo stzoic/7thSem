@@ -1,0 +1,74 @@
+import matplotlib.pyplot as plt
+
+def midpoint_ellipse(xc, yc, rx, ry):
+    x = 0
+    y = ry
+
+    x_pts = []
+    y_pts = []
+
+    def sym(x, y):
+        points = [
+            (xc + x, yc + y),
+            (xc - x, yc + y),
+            (xc + x, yc - y),
+            (xc - x, yc - y)
+        ]
+
+        for px, py in points:
+            x_pts.append(px)
+            y_pts.append(py)
+
+    # Region 1
+    p1 = (ry**2) - (rx**2 * ry) + (0.25 * rx**2)
+
+    dx = 2 * ry**2 * x
+    dy = 2 * rx**2 * y
+
+    while dx < dy:
+        sym(x, y)
+
+        x += 1
+        dx += 2 * ry**2
+
+        if p1 < 0:
+            p1 += dx + ry**2
+        else:
+            y -= 1
+            dy -= 2 * rx**2
+            p1 += dx - dy + ry**2
+
+    # Region 2
+    p2 = (
+        (ry**2) * ((x + 0.5)**2)
+        + (rx**2) * ((y - 1)**2)
+        - (rx**2 * ry**2)
+    )
+
+    while y >= 0:
+        sym(x, y)
+
+        y -= 1
+        dy -= 2 * rx**2
+
+        if p2 > 0:
+            p2 += rx**2 - dy
+        else:
+            x += 1
+            dx += 2 * ry**2
+            p2 += dx - dy + rx**2
+
+    return x_pts, y_pts
+
+
+# Plot the ellipse
+x, y = midpoint_ellipse(0, 0, 20, 10)
+
+plt.figure(figsize=(5, 4))
+plt.scatter(x, y, color="darkorange", s=8, label="Ellipse")
+
+plt.gca().set_aspect("equal")
+plt.grid(True)
+plt.legend()
+
+plt.show()
